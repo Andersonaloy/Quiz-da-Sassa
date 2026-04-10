@@ -166,6 +166,10 @@
   <h2 id="question"></h2> <!-- Pergunta -->
   <div id="options"></div> <!-- Botões de resposta -->
 
+  <button id="btnSom" onclick="toggleMusica()" style="position:absolute; top:10px; right:10px;">
+  🔊
+  </button>
+
   <button id="confirmBtn" class="hidden" onclick="confirmAnswer()">
     Confirmar resposta
   </button>
@@ -195,6 +199,8 @@
 let musica = document.getElementById('musicaFundo');
 musica.volume = 0.3; // volume baixo (15%)
 
+let musicaLigada = true;
+
 /* =====================================================
    VARIÁVEIS DE SELEÇÃO DE RESPOSTA
 ===================================================== */
@@ -219,6 +225,21 @@ function gerarQuestoesAleatorias(qtd = 30) {
   return copia.slice(0, qtd); // pega apenas qtd perguntas
 }
 
+//Função para ligar e desligar a música
+function toggleMusica() {
+  let botao = document.getElementById('btnSom');
+
+  if (musicaLigada) {
+    musica.pause();
+    botao.innerText = "🔇";
+  } else {
+    musica.play().catch(() => {});
+    botao.innerText = "🔊";
+  }
+
+  musicaLigada = !musicaLigada;
+}
+
 /* =====================================================
    INICIA O JOGO
 ===================================================== */
@@ -232,7 +253,9 @@ function startGame() {
 
   // 🎵 INICIA MÚSICA DE FUNDO
   musica.currentTime = 0;
+ if (musicaLigada) {
   musica.play().catch(() => {});
+  }
 
   sons.forEach(som => {
     som.volume = 0;       // deixa mudo
