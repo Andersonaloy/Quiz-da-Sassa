@@ -328,8 +328,10 @@ function checkAnswer(button, selected, correct) {
     document.getElementById('feedback').innerText = "✅ Correto!";
     score++;
 
-    // 🔊 SOM DE ACERTO
-    document.getElementById('somCerto').play();
+    // 🔊 SOM DE ACERTO (Resetamos o tempo para tocar do início)
+    let somCerto = document.getElementById('somCerto');
+    somCerto.currentTime = 0; 
+    somCerto.play().catch(e => console.log("Erro ao tocar som:", e));
 
   } else {
     button.classList.add('wrong');
@@ -337,7 +339,9 @@ function checkAnswer(button, selected, correct) {
       "❌ Errado! Correta: " + correct;
 
     // 🔊 SOM DE ERRO
-    document.getElementById('somErro').play();
+    let somErro = document.getElementById('somErro');
+    somErro.currentTime = 0;
+    somErro.play().catch(e => console.log("Erro ao tocar som:", e));
 
   }
 
@@ -375,7 +379,9 @@ function endGame() {
   document.getElementById('endScreen').classList.remove('hidden');
 
   // 🔊 SOM FINAL
-  document.getElementById('somFinal').play();
+  let somFinal = document.getElementById('somFinal');
+  somFinal.currentTime = 0;
+  somFinal.play().catch(e => console.log("Erro ao tocar som:", e));
 
   // Mostra pontuação
   document.getElementById('score').innerText =
