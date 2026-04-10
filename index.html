@@ -223,15 +223,30 @@ function gerarQuestoesAleatorias(qtd = 30) {
    INICIA O JOGO
 ===================================================== */
 function startGame() {
-  // 🔊 INICIAR MÚSICA
-  musica.currentTime = 0;
-  musica.play();
+  // 🔓 LIBERA TODOS OS ÁUDIOS (truque importante)
+  let sons = [
+    document.getElementById('somCerto'),
+    document.getElementById('somErro'),
+    document.getElementById('somFinal'),
+  ];
 
-  // Esconde tela inicial e mostra o quiz
+  // 🎵 INICIA MÚSICA DE FUNDO
+  musica.currentTime = 0;
+  musica.play().catch(() => {});
+
+  sons.forEach(som => {
+    som.volume = 0;       // deixa mudo
+    som.play().then(() => {
+      som.pause();
+      som.currentTime = 0;
+      som.volume = 0.3;   // volta volume normal
+    }).catch(() => {});
+  });
+
+  // troca telas
   document.getElementById('startScreen').classList.add('hidden');
   document.getElementById('quizScreen').classList.remove('hidden');
 
-  // Reinicia variáveis
   questions = gerarQuestoesAleatorias();
   current = 0;
   score = 0;
